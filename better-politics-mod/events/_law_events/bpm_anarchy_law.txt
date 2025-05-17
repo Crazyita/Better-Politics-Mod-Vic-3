@@ -130,6 +130,12 @@ anarchy.2 = {
 				bpm_leader_is_anarchist = yes
 			}
 		}
+		any_interest_group = {
+			law_stance = {
+				law = law_type:law_dedicated_police
+				value > neutral
+			}
+		}
 		OR = {
 			institution_investment_level = {
 				institution = institution_police
@@ -159,6 +165,33 @@ anarchy.2 = {
     		}
     		save_scope_as = anarchists_scope
     	}
+		random_interest_group = {
+			law_stance = {
+				law = law_type:law_dedicated_police
+				value > neutral
+			}
+			save_scope_as = police_lovers
+		}
+		random_interest_group = {
+			limit = {
+				is_marginal = no
+				law_stance = {
+					law = law_type:law_no_home_affairs
+					value < neutral
+				}
+			}
+			save_scope_as = home_affairs_lovers #(?)
+		}
+		random_interest_group = {
+			limit = {
+				is_marginal = no
+				law_stance = {
+					law = law_type:law_no_colonial_affairs
+					value < neutral
+				}
+			}
+			save_scope_as = colony_lovers
+		}
 	}
 
 	cancellation_trigger = {
@@ -172,23 +205,21 @@ anarchy.2 = {
 				institution = institution_police
 				value >= 2
 			}
+			random_interest_group = {
+				law_stance = {
+					law = law_type:law_dedicated_police
+					value > neutral
+				}
+			}
 		}
 		# add 15 progress
-		add_enactment_modifier = {
-			name = law_dismentling_the_state
-		}
 		change_institution_investment_level = {
 			institution = institution_police
 			investment = -3
 		}
-		if = {
-			limit = {
-				any_interest_group = {
-					law_stance = {
-						law = law_type:law_dedicated_police
-						value > neutral
-					}
-				}
+		if = { 
+			limit = { 
+				is_player = yes
 			}
 			random_interest_group = {
 				limit = {
@@ -205,6 +236,7 @@ anarchy.2 = {
 			}
 		}
 	}
+}
 	
 	option = { # remove home affairs
 		name = anarchy.2.c
@@ -213,9 +245,23 @@ anarchy.2 = {
 				institution = institution_home_affairs
 				value >= 2
 			}
+			any_interest_group = {
+				law_stance = {
+					law = law_type:law_no_home_affairs
+					value < neutral
+				}
+			}
 		}
-		add_enactment_modifier = {
-			name = law_dismentling_the_state
+		if = { 
+			limit ={ is_player = yes}
+			scope:home_affairs_lovers = { 
+				bpm_ig_decrease_law_enactment_approval_big = yes
+			}
+		}
+		else = { 
+			add_enactment_modifier = {
+				name = law_dismentling_the_state
+			}
 		}
 		change_institution_investment_level = {
 			institution = institution_home_affairs
@@ -252,9 +298,25 @@ anarchy.2 = {
 				institution = institution_colonial_affairs
 				value >= 2
 			}
+			any_interest_group = {
+				law_stance = {
+					law = law_type:law_no_colonial_affairs
+					value < neutral
+				}
+			}
 		}
-		add_enactment_modifier = {
-			name = law_dismentling_the_state
+		if = { 
+			limit = { 
+				is_player = yes
+			}
+			colony_lovers = { 
+				bpm_ig_decrease_law_enactment_approval_big = yes
+			}
+		}
+		else = { 
+			add_enactment_modifier = {
+				name = law_dismentling_the_state
+			}
 		}
 		change_institution_investment_level = {
 			institution = institution_colonial_affairs
@@ -282,7 +344,6 @@ anarchy.2 = {
 					months = short_modifier_time
 				}
 			}
-		}
 	}
 	option = { # remove nothing
 		name = anarchy.2.e

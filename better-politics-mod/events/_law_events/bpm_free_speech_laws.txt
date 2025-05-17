@@ -44,6 +44,18 @@ free_speech_laws.1 = {
 		currently_enacting_law = {
     		save_scope_as = current_law_scope
     	}
+		random_interest_group ={ 
+			limit ={ 
+				bpm_ig_disapproves_to_neutral_enactment = yes
+			}
+			save_scope_as = ig_unapproves_to_neutral
+		}
+		random_interest_group ={ 
+			limit ={ 
+				bpm_ig_is_institutional = yes
+			}
+			save_scope_as = ig_unideological
+		}
 	}
 
 	cancellation_trigger = {
@@ -57,12 +69,13 @@ free_speech_laws.1 = {
 			limit ={ 
 				is_player = yes
 			}
-			random_interest_group ={ 
+			scope:ig_unapproves_to_neutral ={ 
 				limit ={ 
 					bpm_ig_disapproves_to_neutral_enactment = yes
 				}
 				bpm_ig_increase_law_enactment_approval_small = yes
 			}
+			
 		}
 		else = { 
 			add_enactment_modifier = {
@@ -79,16 +92,16 @@ free_speech_laws.1 = {
 			}
 			random_list = { 
 				1 ={ 
-					random_interest_group ={ 
+					scope:ig_unapproves_to_neutral ={ 
 						limit ={ 
-							bpm_ig_is_institutional = yes
+							bpm_ig_disapproves_to_neutral_enactment = yes
 						}
 						
 					bpm_ig_decrease_law_enactment_approval_small = yes
 					}
 				}
 				3 = { 
-					random_interest_group ={ 
+					scope:ig_unideological ={ 
 						limit ={ 
 							bpm_ig_is_institutional = yes
 						}
@@ -175,6 +188,26 @@ free_speech_laws.2 = {
 			}
 			save_scope_as = book_burning_ig
     	}
+		random_interest_group ={ 
+			limit ={ 
+				bpm_ig_neutral_enactment = yes
+			}
+			save_scope_as = bpm_ig_swiss_neutrality_event
+		}
+		random_interest_group ={ 
+			limit ={ 
+				bpm_ig_neutral_enactment = yes
+				bpm_ig_is_institutional = yes
+			}
+			save_scope_as = ig_neutral_institution
+		}
+		random_interest_group ={ 
+			limit ={ 
+				bpm_ig_neutral_enactment = yes
+				bpm_ig_is_institutional = no
+			}
+			save_scope_as = ig_neutral_uninstitution
+		}
 	}
 
 	cancellation_trigger = {
@@ -189,7 +222,7 @@ free_speech_laws.2 = {
 		default_option = yes
 		if ={ 
 			limit ={ is_player = yes}
-			random_interest_group ={ 
+			scope:bpm_ig_swiss_neutrality_event ={ 
 				limit ={ 
 					bpm_ig_neutral_enactment = yes
 				}
@@ -219,14 +252,14 @@ free_speech_laws.2 = {
 		}
 		if ={ 
 			limit ={ is_player = yes}
-			random_interest_group ={ 
+			scope:ig_neutral_institution ={ 
 				limit ={ 
 					bpm_ig_neutral_enactment = yes
 					bpm_ig_is_institutional = yes
 				}
 				bpm_ig_increase_law_enactment_approval_medium = yes
 			}
-			random_interest_group ={ 
+			scope:ig_neutral_uninstitution ={ 
 				limit ={ 
 					bpm_ig_neutral_enactment = yes
 					bpm_ig_is_institutional = no
@@ -237,7 +270,7 @@ free_speech_laws.2 = {
 				limit ={ 
 					bpm_ig_disapproves_enactment = yes
 				}
-				bpm_ig_decrease_law_enactment_approval_big = yes
+				bpm_ig_decrease_law_enactment_approval_medium = yes
 			}
 		}
 		else ={ 
@@ -301,6 +334,18 @@ free_speech_laws.3 = {
 		currently_enacting_law = {
     		save_scope_as = current_law_scope
     	}
+		random_interest_group ={ 
+			limit ={ 
+				bpm_ig_approves_to_neutral_enactment = yes
+			}
+			save_scope_as = ig_approves_to_neutral
+		}
+		random_interest_group ={ 
+			limit ={ 
+				bpm_ig_is_institutional = yes
+			}
+			save_scope_as = ig_institutional_corrupt
+		}
 	}
 
 	cancellation_trigger = {
@@ -314,7 +359,7 @@ free_speech_laws.3 = {
 			limit ={ 
 				is_player = yes
 			}
-			random_interest_group ={ 
+			scope:ig_approves_to_neutral ={ 
 				limit ={ 
 					bpm_ig_approves_to_neutral_enactment = yes
 				}
@@ -336,7 +381,7 @@ free_speech_laws.3 = {
 			}
 			random_list = { 
 				1 ={ 
-					random_interest_group ={ 
+					scope:ig_institutional_corrupt ={ 
 						limit ={ 
 							bpm_ig_is_institutional = yes
 						}
@@ -344,7 +389,7 @@ free_speech_laws.3 = {
 					}
 				}
 				3 = { 
-					random_interest_group ={ 
+					scope:ig_institutional_corrupt ={ 
 						limit ={ 
 							bpm_ig_is_institutional = yes
 						}
@@ -563,6 +608,25 @@ free_speech_laws.5 = {
 				save_scope_as = neighbour_country
 			}
 		}
+		random_interest_group ={ 
+			limit ={ 
+				bpm_ig_disapproves_to_neutral_enactment = yes
+				NOT ={ #moralists dont like the king reading lewd stuff
+					has_ideology = ideology:ideology_rel_moralist
+					has_ideology = ideology:ideology_rel_radical_moralist
+					leader ={ 
+						has_ideology = ideology:ideology_traditionalist
+					}
+				}
+			}
+			save_scope_as = ig_not_moralist_disapproves_to_neural
+		}
+		random_interest_group = { 
+			limit = { 
+				bpm_ig_neutral_enactment = yes
+			}
+			save_scope_as = ig_dislikes_lewdness
+		}
 	}
 
 	cancellation_trigger = {
@@ -574,7 +638,7 @@ free_speech_laws.5 = {
 		default_option = yes
 		if ={ 
 			limit ={ is_player = yes}
-			random_interest_group ={ 
+			scope:ig_not_moralist_disapproves_to_neural ={ 
 				limit ={ 
 					bpm_ig_disapproves_to_neutral_enactment = yes
 					NOT ={ #moralists dont like the king reading lewd stuff
@@ -602,7 +666,7 @@ free_speech_laws.5 = {
 		name = free_speech_laws.5.b
 		if ={ 
 			limit ={ is_player = yes}
-			random_interest_group ={ 
+			scope:ig_dislikes_lewdness ={ 
 				limit ={ 
 					bpm_ig_neutral_enactment = yes
 				}
@@ -691,6 +755,13 @@ free_speech_laws.6 = { #Insulting drawing
     	ruler = {
 			save_scope_as = ruler_scope
 		}
+		random_interest_group ={ 
+			limit ={ 
+				bpm_ig_neutral_enactment = yes
+				bpm_ig_is_institutional = yes
+			}
+			save_scope_as = ig_neural_institution
+		}
 	}
 
 	cancellation_trigger = {
@@ -702,7 +773,7 @@ free_speech_laws.6 = { #Insulting drawing
 		default_option = yes
 		if ={ 
 			limit ={ is_player = yes}
-			random_interest_group ={ 
+			scope:ig_neural_institution ={ 
 				limit ={ 
 					bpm_ig_neutral_enactment = yes
 					bpm_ig_is_institutional = yes
@@ -721,7 +792,7 @@ free_speech_laws.6 = { #Insulting drawing
 		name = free_speech_laws.6.b
 		if ={ 
 			limit ={ is_player = yes}
-			random_interest_group ={ 
+			scope:ig_neural_institution ={ 
 				limit ={ 
 					bpm_ig_neutral_enactment = yes
 					bpm_ig_is_institutional = yes
